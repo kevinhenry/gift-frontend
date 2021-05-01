@@ -14,7 +14,7 @@ class App extends React.Component {
     }
   }
   handleEmailInput = (e) => {
-    this.setState({email: e.target.value}); 
+    this.setState({email: e.target.value});
   }
   handleNameInput = (e) => {
     this.setState({name: e.target.value});
@@ -26,9 +26,9 @@ class App extends React.Component {
     e.preventDefault();
     this.fetchUserData();
   }
-  
+
   fetchUserData = () => {
-    axios.get(`${process.env/REACT_APP_SERVER_URL}/users/$this.state.email}`)
+    axios.get(`${process.env.REACT_APP_SERVER_URL}/users/${this.state.email}`)
     .then(serverResponse => {
       console.log(serverResponse.data);
       this.setState({
@@ -39,23 +39,23 @@ class App extends React.Component {
 
   handleCreateGift = (e) => {
     e.preventDefault();
-    console.log('name', this.state.name, 'email', this.state.email, 'decription', this.state.description);
-    // make the request to the servee with the info the user typed in
-    axios.post(`${process.env/REACT_APP_SERVER_URL}/gifts`, {
+    console.log('name', this.state.name, 'email', this.state.email, 'description', this.state.description);
+    // make the request to the server with the info the user typed in
+    axios.post(`${process.env.REACT_APP_SERVER_URL}/gifts`, {
       description: this.state.description,
       email: this.state.email,
       name: this.state.name
-    }).then(response => {
+    }).then( response => {
       console.log(response.data);
       this.setState({
         gifts: response.data
       })
-    })
+    });
   }
 
   handleDelete = (id) => {
     axios.delete(`${process.env.REACT_APP_SERVER_URL}/gifts/${id}?user=${this.state.email}`).then(responseData => {
-      this.setState({
+      this.setState({ 
         gifts: responseData.data
       })
     })
@@ -68,12 +68,12 @@ class App extends React.Component {
     return <>
       <h1>Gifts!</h1>
       <form onSubmit={this.handleFormSubmit}>
-        <input type="text" onInput={this.HandleEmailInput} />
+        <input type="text" onInput={this.handleEmailInput} />
         <input type="submit" />
       </form>
       {this.state.gifts.length > 0 && <ul>
-        {this.state.gifts.map(gift =>
-          <li key={gift.id}>{gift.name}: {gift.description} <button onClick={e => this.handleDelete(gift._id)} >Delete</button></li>
+        {this.state.gifts.map(gift => 
+          <li key={gift._id}>{gift.name}: {gift.description} <button onClick={e => this.handleDelete(gift._id)} >Delete</button></li>
         )}
         </ul>}
       <form onSubmit={this.handleCreateGift}>
@@ -81,7 +81,7 @@ class App extends React.Component {
         <input id="name" type="text" onInput={this.handleNameInput}></input>
         <br />
         <label htmlFor="description">Description</label>
-        <input id="decription" onInput={this.handleDescriptionInput}></input>
+        <input id="description" onInput={this.handleDescriptionInput}></input>
         <br />
         <input type="submit" />
       </form>
